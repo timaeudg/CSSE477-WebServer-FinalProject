@@ -42,6 +42,8 @@ import server.Server;
  */
 public class WebServer extends JFrame {
 	private static final long serialVersionUID = 5042579745743827174L;
+	
+	private static Server server;
 
 	/**
 	 * The application start point.
@@ -54,5 +56,9 @@ public class WebServer extends JFrame {
 				new WebServerGui().setVisible(true);
 			}
 		});
-	}	
+	}
+	
+	public static void createServer() {
+		server = new Server(rootDirectory, port, WebServerGui.this);
+	}
 }

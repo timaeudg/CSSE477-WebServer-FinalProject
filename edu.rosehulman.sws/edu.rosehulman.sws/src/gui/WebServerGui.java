@@ -31,6 +31,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import server.Server;
+import server.WebServer;
 
 /**
  * The application window for the {@link Server}, where you can update
@@ -54,7 +55,7 @@ public class WebServerGui extends JFrame {
 	private JLabel lblServiceRate;
 	private JTextField txtServiceRate;
 	
-	private Server server;
+	private WebServer server;
 	private ServiceRateUpdater rateUpdater;
 	
 	/**

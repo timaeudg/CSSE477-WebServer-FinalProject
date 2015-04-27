@@ -28,14 +28,14 @@ import java.net.Socket;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
-import protocol.ResponseCommand;
-import protocol.ResponseCommand200;
-import protocol.ResponseCommand304;
-import protocol.ResponseCommand400;
-import protocol.ResponseCommand404;
-import protocol.ResponseCommand505;
 import protocol.Protocol;
 import protocol.ProtocolException;
+import response.ResponseCommand;
+import response.ResponseCommand200;
+import response.ResponseCommand304;
+import response.ResponseCommand400;
+import response.ResponseCommand404;
+import response.ResponseCommand505;
 
 /**
  * This class is responsible for handling a incoming request
@@ -107,8 +107,10 @@ public class ConnectionHandler implements Runnable {
 			int status = pe.getStatus();
 			if(status == Protocol.BAD_REQUEST_CODE) {
 				response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
+			} else if (status == Protocol.NOT_SUPPORTED_CODE) {
+				// TODO: Handle version not supported code as well
+				
 			}
-			// TODO: Handle version not supported code as well
 		}
 		catch(Exception e) {
 			e.printStackTrace();
