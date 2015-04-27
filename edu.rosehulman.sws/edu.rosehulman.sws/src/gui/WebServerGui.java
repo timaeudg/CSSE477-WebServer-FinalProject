@@ -55,7 +55,6 @@ public class WebServerGui extends JFrame {
 	private JLabel lblServiceRate;
 	private JTextField txtServiceRate;
 	
-	private WebServer server;
 	private ServiceRateUpdater rateUpdater;
 	
 	/**
@@ -68,8 +67,8 @@ public class WebServerGui extends JFrame {
 		public void run() {
 			while(!stop) {
 				// Poll if server is not null and server is still accepting connections
-				if(server != null && !server.isStopped()) {
-					double rate = server.getServiceRate();
+				if(WebServer.getServer() != null && !WebServer.getServer().isStopped()) {
+					double rate = WebServer.getServer().getServiceRate();
 					if(rate == Double.MIN_VALUE)
 						WebServerGui.this.txtServiceRate.setText("Unknown");
 					else
@@ -167,7 +166,7 @@ public class WebServerGui extends JFrame {
 		// Add action for run server
 		this.butStartServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(server != null && !server.isStopped()) {
+				if(WebServer.getServer() != null && !WebServer.getServer().isStopped()) {
 					JOptionPane.showMessageDialog(WebServerGui.this, "The web server is still running, try again later.", "Server Still Running Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -186,14 +185,12 @@ public class WebServerGui extends JFrame {
 				String rootDirectory = WebServerGui.this.txtRootDirectory.getText();
 				
 				// Now run the server in non-gui thread
-				server = new Server(rootDirectory, port, WebServerGui.this);
+				WebServer.createServer(rootDirectory, port, WebServerGui.this);
+				
 				rateUpdater = new ServiceRateUpdater();
 				
 				// Disable widgets
 				WebServerGui.this.disableWidgets();
-				
-				// Now run the server in a separate thread
-				new Thread(server).start();
 				
 				// Also run the service rate updater thread
 				new Thread(rateUpdater).start();
@@ -203,8 +200,8 @@ public class WebServerGui extends JFrame {
 		// Add action for stop button
 		this.butStopServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(server != null && !server.isStopped())
-					server.stop();
+				if(WebServer.getServer() != null && !WebServer.getServer().isStopped())
+					WebServer.getServer().stop();
 				if(rateUpdater != null)
 					rateUpdater.stop = true;
 				WebServerGui.this.enableWidgets();
@@ -214,8 +211,8 @@ public class WebServerGui extends JFrame {
 		// Make sure the web server is stopped before closing the window
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(server != null && !server.isStopped())
-					server.stop();
+				if(WebServer.getServer() != null && !WebServer.getServer().isStopped())
+					WebServer.getServer().stop();
 				if(rateUpdater != null)
 					rateUpdater.stop = true;
 			}
@@ -242,9 +239,9 @@ public class WebServerGui extends JFrame {
 	 */
 	public void showSocketException(Exception e) {
 		JOptionPane.showMessageDialog(this, e.getMessage(), "Web Server Socket Problem", JOptionPane.ERROR_MESSAGE);
-		if(this.server != null)
-			this.server.stop();
-		this.server = null;
+		if(WebServer.getServer() != null)
+			WebServer.getServer().stop();
+		WebServer.clearServer();
 		
 		if(this.rateUpdater != null)
 			this.rateUpdater.stop = true;
