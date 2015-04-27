@@ -1,6 +1,7 @@
 package response;
 
 import java.io.File;
+import java.util.HashMap;
 
 import protocol.HttpResponse;
 import protocol.Protocol;
@@ -15,8 +16,13 @@ public class ResponseCommand505 implements ResponseCommand {
 
 	@Override
 	public HttpResponse createResponse(File file, String connection) {
-		// TODO Auto-generated method stub
-		return null;
+		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.NOT_SUPPORTED_CODE, 
+				Protocol.NOT_SUPPORTED_TEXT, new HashMap<String, String>(), null);
+		
+		// Lets fill up the header fields with more information
+		HttpResponseFactory.fillGeneralHeader(response, connection);
+		
+		return response;
 	}
 
 }

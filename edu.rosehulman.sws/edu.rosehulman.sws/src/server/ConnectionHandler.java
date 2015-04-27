@@ -21,20 +21,18 @@
  
 package server;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.AbstractMap.SimpleEntry;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import protocol.ProtocolException;
-import response.ResponseCommand;
-import response.ResponseCommand200;
-import response.ResponseCommand304;
+import request.processor.RequestProcessorManager;
+import response.HttpResponseFactory;
 import response.ResponseCommand400;
-import response.ResponseCommand404;
 import response.ResponseCommand505;
 
 /**
@@ -96,27 +94,9 @@ public class ConnectionHandler implements Runnable {
 		// Now lets create a HttpRequest object
 		HttpRequest request = null;
 		HttpResponse response = null;
-		try {
-			request = HttpRequest.read(inStream);
-			System.out.println(request);
-		}
-		catch(ProtocolException pe) {
-			// We have some sort of protocol exception. Get its status code and create response
-			// We know only two kind of exception is possible inside fromInputStream
-			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
-			int status = pe.getStatus();
-			if(status == Protocol.BAD_REQUEST_CODE) {
-				response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
-			} else if (status == Protocol.NOT_SUPPORTED_CODE) {
-				// TODO: Handle version not supported code as well
-				
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			// For any other error, we will create bad request response as well
-			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
-		}
+		SimpleEntry<HttpRequest, HttpResponse> pair = RequestProcessorManager.parseRequest(request, inStream, outStream);
+		request = pair.getKey();
+		response = pair.getValue();
 		
 		if(response != null) {
 			// Means there was an error, now write the response object to the socket
@@ -138,64 +118,15 @@ public class ConnectionHandler implements Runnable {
 		}
 		
 		// We reached here means no error so far, so lets process further
-		try {
-			// Fill in the code to create a response for version mismatch.
-			// You may want to use constants such as Protocol.VERSION, Protocol.NOT_SUPPORTED_CODE, and more.
-			// You can check if the version matches as follows
-			if(!request.getVersion().equalsIgnoreCase(Protocol.VERSION)) {
-				// Here you checked that the "Protocol.VERSION" string is not equal to the  
-				// "request.version" string ignoring the case of the letters in both strings
-				// TODO: Fill in the rest of the code here
-			}
-			else if(request.getMethod().equalsIgnoreCase(Protocol.GET)) {
-//				Map<String, String> header = request.getHeader();
-//				String date = header.get("if-modified-since");
-//				String hostName = header.get("host");
-//				
-				// Handling GET request here
-				// Get relative URI path from request
-				String uri = request.getUri();
-				// Get root directory path from server
-				String rootDirectory = server.getRootDirectory();
-				// Combine them together to form absolute file path
-				File file = new File(rootDirectory + uri);
-				// Check if the file exists
-				if(file.exists()) {
-					if(file.isDirectory()) {
-						// Look for default index.html file in a directory
-						String location = rootDirectory + uri + System.getProperty("file.separator") + Protocol.DEFAULT_FILE;
-						file = new File(location);
-						if(file.exists()) {
-							// Lets create 200 OK response
-							response = new ResponseCommand200().createResponse(null, Protocol.CLOSE);
-						}
-						else {
-							// File does not exist so lets create 404 file not found code
-							response = new ResponseCommand404().createResponse(null, Protocol.CLOSE);
-						}
-					}
-					else { // Its a file
-						// Lets create 200 OK response
-						response = new ResponseCommand200().createResponse(null, Protocol.CLOSE);
-					}
-				}
-				else {
-					// File does not exist so lets create 404 file not found code
-					response = new ResponseCommand404().createResponse(null, Protocol.CLOSE);
-				}
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		response = RequestProcessorManager.processRequest(request);
 		
 
-		// TODO: So far response could be null for protocol version mismatch.
-		// So this is a temporary patch for that problem and should be removed
-		// after a response object is created for protocol version mismatch.
-		if(response == null) {
-			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
-		}
+//		// TODO: So far response could be null for protocol version mismatch.
+//		// So this is a temporary patch for that problem and should be removed
+//		// after a response object is created for protocol version mismatch.
+//		if(response == null) {
+//			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
+//		}
 		
 		try{
 			// Write response and we are all done so close the socket

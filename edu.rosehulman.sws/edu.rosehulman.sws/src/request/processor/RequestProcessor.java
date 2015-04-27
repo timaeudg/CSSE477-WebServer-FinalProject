@@ -1,13 +1,10 @@
 package request.processor;
 
-public abstract class RequestProcessor {
+import protocol.HttpRequest;
+import protocol.HttpResponse;
 
-	public void process(){
-		
-	}
-	
-	public static void checkFileExists() {
-		
-	}
+public interface RequestProcessor {
+
+	public HttpResponse process(HttpRequest request);
 	
 }
