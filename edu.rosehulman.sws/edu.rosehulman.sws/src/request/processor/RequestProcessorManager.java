@@ -31,6 +31,12 @@ public class RequestProcessorManager {
 		} else if(request.getMethod().equalsIgnoreCase(Protocol.DELETE)) {
 		    RequestProcessor deleteProcessor = new DeleteRequestProcessor();
             toReturnResponse = deleteProcessor.process(request);
+		} else if(request.getMethod().equalsIgnoreCase(Protocol.POST)) {
+		    RequestProcessor postProcessor = new PostRequestProcessor();
+		    toReturnResponse = postProcessor.process(request);
+		} else if(request.getMethod().equalsIgnoreCase(Protocol.PUT)) {
+		    RequestProcessor putProcessor = new PutRequestProcessor();
+            toReturnResponse = putProcessor.process(request);
 		}
 		return toReturnResponse;
 	}

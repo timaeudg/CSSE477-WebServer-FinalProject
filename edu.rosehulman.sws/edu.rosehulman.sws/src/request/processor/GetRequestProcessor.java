@@ -6,7 +6,6 @@ import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import response.ResponseCommand200;
-import server.WebServer;
 
 public class GetRequestProcessor extends FileMustExistProcessor{
 

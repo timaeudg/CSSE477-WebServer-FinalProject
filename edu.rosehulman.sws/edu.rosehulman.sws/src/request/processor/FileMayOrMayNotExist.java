@@ -1,5 +1,5 @@
 /*
- * FileMustExistProcessor.java
+ * FileMayOrMayNotExist.java
  * Apr 27, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
@@ -32,15 +32,12 @@ import java.io.File;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
-import protocol.Protocol;
-import response.HttpResponseFactory;
-import response.ResponseCommand404;
 
 /**
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public abstract class FileMustExistProcessor extends RequestProcessor {
+public abstract class FileMayOrMayNotExist extends RequestProcessor {
 
     /* (non-Javadoc)
      * @see request.processor.RequestProcessor#process(protocol.HttpRequest)
@@ -49,12 +46,14 @@ public abstract class FileMustExistProcessor extends RequestProcessor {
     public HttpResponse process(HttpRequest request) {
         if(checkIfFileExists(request)) {
             File file = getFilePath(request);
-            return processExistingFile(request, file);
+            return fileExisted(request, file);
         } else {
-            return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand404(), null, Protocol.CLOSE);
+            return fileDidNotExist(request);
         }
     }
     
-    protected abstract HttpResponse processExistingFile(HttpRequest request, File file);
+    public abstract HttpResponse fileExisted(HttpRequest request, File file);
+    
+    public abstract HttpResponse fileDidNotExist(HttpRequest request);
 
 }

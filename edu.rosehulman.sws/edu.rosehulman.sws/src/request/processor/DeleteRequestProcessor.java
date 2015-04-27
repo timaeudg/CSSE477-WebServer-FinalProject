@@ -9,7 +9,7 @@ import protocol.HttpResponse;
 import protocol.Protocol;
 import response.HttpResponseFactory;
 import response.ResponseCommand200;
-import response.ResponseCommand400;
+import response.ResponseCommand500;
 
 public class DeleteRequestProcessor extends FileMustExistProcessor{
 
@@ -22,12 +22,10 @@ public class DeleteRequestProcessor extends FileMustExistProcessor{
             if(Files.deleteIfExists(file.toPath())){ 
                 return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand200(), null, Protocol.CLOSE);
             } else {
-                // TODO Change this to 500 code
-                return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand400(), null, Protocol.CLOSE);
+                return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand500(), null, Protocol.CLOSE);
             }
         } catch (IOException e) {
-            // TODO Change this to 500 code
-            return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand400(), null, Protocol.CLOSE);
+            return HttpResponseFactory.createHttpResponseFromCommand(new ResponseCommand500(), null, Protocol.CLOSE);
         }
     }
 
