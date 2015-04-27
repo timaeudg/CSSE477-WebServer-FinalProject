@@ -26,7 +26,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -187,5 +189,24 @@ public class HttpResponse {
 		buffer.append("\n----------------------------------\n");
 		return buffer.toString();
 	}
-	
+	/**
+	 * Convenience method for adding general header to the supplied response object.
+	 * 
+	 * @param response The {@link HttpResponse} object whose header needs to be filled in.
+	 * @param connection Supported values are {@link Protocol#OPEN} and {@link Protocol#CLOSE}.
+	 */
+	public void fillGeneralHeader(String connection) {
+		// Lets add Connection header
+		put(Protocol.CONNECTION, connection);
+
+		// Lets add current date
+		Date date = Calendar.getInstance().getTime();
+		put(Protocol.DATE, date.toString());
+		
+		// Lets add server info
+		put(Protocol.Server, Protocol.getServerInfo());
+
+		// Lets add extra header with provider info
+		put(Protocol.PROVIDER, Protocol.AUTHOR);
+	}
 }

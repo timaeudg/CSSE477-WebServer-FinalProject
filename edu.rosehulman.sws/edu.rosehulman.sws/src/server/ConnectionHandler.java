@@ -28,7 +28,12 @@ import java.net.Socket;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
-import protocol.HttpResponseFactory;
+import protocol.ResponseCommand;
+import protocol.ResponseCommand200;
+import protocol.ResponseCommand304;
+import protocol.ResponseCommand400;
+import protocol.ResponseCommand404;
+import protocol.ResponseCommand505;
 import protocol.Protocol;
 import protocol.ProtocolException;
 
@@ -101,14 +106,14 @@ public class ConnectionHandler implements Runnable {
 			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
 			int status = pe.getStatus();
 			if(status == Protocol.BAD_REQUEST_CODE) {
-				response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+				response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
 			}
 			// TODO: Handle version not supported code as well
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			// For any other error, we will create bad request response as well
-			response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
 		}
 		
 		if(response != null) {
@@ -160,21 +165,21 @@ public class ConnectionHandler implements Runnable {
 						file = new File(location);
 						if(file.exists()) {
 							// Lets create 200 OK response
-							response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+							response = new ResponseCommand200().createResponse(null, Protocol.CLOSE);
 						}
 						else {
 							// File does not exist so lets create 404 file not found code
-							response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
+							response = new ResponseCommand404().createResponse(null, Protocol.CLOSE);
 						}
 					}
 					else { // Its a file
 						// Lets create 200 OK response
-						response = HttpResponseFactory.create200OK(file, Protocol.CLOSE);
+						response = new ResponseCommand200().createResponse(null, Protocol.CLOSE);
 					}
 				}
 				else {
 					// File does not exist so lets create 404 file not found code
-					response = HttpResponseFactory.create404NotFound(Protocol.CLOSE);
+					response = new ResponseCommand404().createResponse(null, Protocol.CLOSE);
 				}
 			}
 		}
@@ -187,7 +192,7 @@ public class ConnectionHandler implements Runnable {
 		// So this is a temporary patch for that problem and should be removed
 		// after a response object is created for protocol version mismatch.
 		if(response == null) {
-			response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
 		}
 		
 		try{

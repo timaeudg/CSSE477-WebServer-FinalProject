@@ -21,7 +21,7 @@
  
 package server;
 
-import gui.WebServer;
+import gui.WebServerGui;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -42,12 +42,12 @@ public class Server implements Runnable {
 	private long connections;
 	private long serviceTime;
 	
-	private WebServer window;
+	private WebServerGui window;
 	/**
 	 * @param rootDirectory
 	 * @param port
 	 */
-	public Server(String rootDirectory, int port, WebServer window) {
+	public Server(String rootDirectory, int port, WebServerGui window) {
 		this.rootDirectory = rootDirectory;
 		this.port = port;
 		this.stop = false;
@@ -163,7 +163,7 @@ public class Server implements Runnable {
 	 * Checks if the server is stopeed or not.
 	 * @return
 	 */
-	public boolean isStoped() {
+	public boolean isStopped() {
 		if(this.welcomeSocket != null)
 			return this.welcomeSocket.isClosed();
 		return true;

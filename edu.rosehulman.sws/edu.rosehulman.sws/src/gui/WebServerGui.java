@@ -38,7 +38,7 @@ import server.Server;
  * 
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
-public class WebServer extends JFrame {
+public class WebServerGui extends JFrame {
 	private static final long serialVersionUID = 5042579745743827174L;
 
 	private JPanel panelRunServer;
@@ -67,12 +67,12 @@ public class WebServer extends JFrame {
 		public void run() {
 			while(!stop) {
 				// Poll if server is not null and server is still accepting connections
-				if(server != null && !server.isStoped()) {
+				if(server != null && !server.isStopped()) {
 					double rate = server.getServiceRate();
 					if(rate == Double.MIN_VALUE)
-						WebServer.this.txtServiceRate.setText("Unknown");
+						WebServerGui.this.txtServiceRate.setText("Unknown");
 					else
-						WebServer.this.txtServiceRate.setText(Double.toString(rate));
+						WebServerGui.this.txtServiceRate.setText(Double.toString(rate));
 				}
 				
 				// Poll at an interval of 500 milliseconds
@@ -85,7 +85,7 @@ public class WebServer extends JFrame {
 	}
 
 	/** Creates new form WebServer */
-	public WebServer() {
+	public WebServerGui() {
 		initComponents();
 		this.addListeners();
 	}
@@ -149,16 +149,16 @@ public class WebServer extends JFrame {
 		this.butSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Get hold of the current directory
-				String currentDirectory = WebServer.this.txtRootDirectory.getText();
+				String currentDirectory = WebServerGui.this.txtRootDirectory.getText();
 				JFileChooser fileChooser = new JFileChooser(currentDirectory);
 				fileChooser.setDialogTitle("Chose Web Server Root Directory");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setMultiSelectionEnabled(false);
 				fileChooser.setAcceptAllFileFilterUsed(false);
-				if(fileChooser.showOpenDialog(WebServer.this) == JFileChooser.APPROVE_OPTION) {
+				if(fileChooser.showOpenDialog(WebServerGui.this) == JFileChooser.APPROVE_OPTION) {
 					// A folder has been chosen
 					currentDirectory = fileChooser.getSelectedFile().getAbsolutePath();
-					WebServer.this.txtRootDirectory.setText(currentDirectory);
+					WebServerGui.this.txtRootDirectory.setText(currentDirectory);
 				}
 			}
 		});
@@ -166,30 +166,30 @@ public class WebServer extends JFrame {
 		// Add action for run server
 		this.butStartServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(server != null && !server.isStoped()) {
-					JOptionPane.showMessageDialog(WebServer.this, "The web server is still running, try again later.", "Server Still Running Error", JOptionPane.ERROR_MESSAGE);
+				if(server != null && !server.isStopped()) {
+					JOptionPane.showMessageDialog(WebServerGui.this, "The web server is still running, try again later.", "Server Still Running Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				
 				// Read port number
 				int port = 80;
 				try {
-					port = Integer.parseInt(WebServer.this.txtPortNumber.getText());
+					port = Integer.parseInt(WebServerGui.this.txtPortNumber.getText());
 				}
 				catch(Exception ex) {
-					JOptionPane.showMessageDialog(WebServer.this, "Invalid Port Number!", "Web Server Input Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(WebServerGui.this, "Invalid Port Number!", "Web Server Input Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				
 				// Get hold of the root directory
-				String rootDirectory = WebServer.this.txtRootDirectory.getText();
+				String rootDirectory = WebServerGui.this.txtRootDirectory.getText();
 				
 				// Now run the server in non-gui thread
-				server = new Server(rootDirectory, port, WebServer.this);
+				server = new Server(rootDirectory, port, WebServerGui.this);
 				rateUpdater = new ServiceRateUpdater();
 				
 				// Disable widgets
-				WebServer.this.disableWidgets();
+				WebServerGui.this.disableWidgets();
 				
 				// Now run the server in a separate thread
 				new Thread(server).start();
@@ -202,18 +202,18 @@ public class WebServer extends JFrame {
 		// Add action for stop button
 		this.butStopServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(server != null && !server.isStoped())
+				if(server != null && !server.isStopped())
 					server.stop();
 				if(rateUpdater != null)
 					rateUpdater.stop = true;
-				WebServer.this.enableWidgets();
+				WebServerGui.this.enableWidgets();
 			}
 		});
 		
 		// Make sure the web server is stopped before closing the window
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(server != null && !server.isStoped())
+				if(server != null && !server.isStopped())
 					server.stop();
 				if(rateUpdater != null)
 					rateUpdater.stop = true;
@@ -251,16 +251,4 @@ public class WebServer extends JFrame {
 		this.enableWidgets();
 	}
 	
-	/**
-	 * The application start point.
-	 * 
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new WebServer().setVisible(true);
-			}
-		});
-	}
 }
