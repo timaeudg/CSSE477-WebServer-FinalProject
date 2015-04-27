@@ -46,6 +46,13 @@ public class WebServer extends JFrame {
 	private static Server server;
 
 	/**
+	 * @return the server
+	 */
+	public static Server getServer() {
+		return server;
+	}
+
+	/**
 	 * The application start point.
 	 * 
 	 * @param args the command line arguments
@@ -58,7 +65,14 @@ public class WebServer extends JFrame {
 		});
 	}
 	
-	public static void createServer() {
-		server = new Server(rootDirectory, port, WebServerGui.this);
+	public static void createServer(String rootDirectory, int port, WebServerGui gui) {
+		server = new Server(rootDirectory, port, gui);
+		// Now run the server in a separate thread
+		new Thread(server).start();
+	}
+	
+	public static void clearServer(){
+		server.stop();
+		server = null;
 	}
 }
