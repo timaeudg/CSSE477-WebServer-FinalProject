@@ -26,16 +26,17 @@
  * http://clarkson.edu/~rupakhcr
  */
 
-package request.processor;
+package request.processing.processors;
 
 import java.io.File;
 import java.io.FileWriter;
+
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import response.HttpResponseFactory;
-import response.ResponseCommand200;
-import response.ResponseCommand500;
+import response.commands.ResponseCommand200;
+import response.commands.ResponseCommand500;
 import server.WebServer;
 
 /**

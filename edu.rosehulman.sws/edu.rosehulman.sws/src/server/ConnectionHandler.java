@@ -30,10 +30,10 @@ import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import protocol.ProtocolException;
-import request.processor.RequestProcessorManager;
+import request.processing.RequestProcessorManager;
 import response.HttpResponseFactory;
-import response.ResponseCommand400;
-import response.ResponseCommand505;
+import response.commands.ResponseCommand400;
+import response.commands.ResponseCommand505;
 
 /**
  * This class is responsible for handling a incoming request
@@ -102,6 +102,7 @@ public class ConnectionHandler implements Runnable {
 			// Means there was an error, now write the response object to the socket
 			try {
 				response.write(outStream);
+				socket.close();
 //				System.out.println(response);
 			}
 			catch(Exception e){
@@ -118,20 +119,10 @@ public class ConnectionHandler implements Runnable {
 		}
 		
 		// We reached here means no error so far, so lets process further
-		response = RequestProcessorManager.processRequest(request);
-		
-
-//		// TODO: So far response could be null for protocol version mismatch.
-//		// So this is a temporary patch for that problem and should be removed
-//		// after a response object is created for protocol version mismatch.
-//		if(response == null) {
-//			response = new ResponseCommand400().createResponse(null, Protocol.CLOSE);
-//		}
+		RequestProcessorManager.processRequest(request, outStream);
 		
 		try{
-			// Write response and we are all done so close the socket
-			response.write(outStream);
-//			System.out.println(response);
+			// we are all done so close the socket
 			socket.close();
 		}
 		catch(Exception e){

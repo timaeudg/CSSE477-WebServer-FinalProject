@@ -1,0 +1,20 @@
+{
+    "config": 
+    [{
+        "path": "StartingServlet",
+        "method": "GET",
+        "servlet": "ExampleServlet"
+    },
+    {
+        "path": "BUTTSbutts",
+        "method": "POST",
+        "servlet": "ExampleServlet"
+    },
+    {
+        "path": "ExampleServlet",
+        "method": "POST",
+        "servlet": "ExampleServlet"
+    },
+    
+    ]
+}

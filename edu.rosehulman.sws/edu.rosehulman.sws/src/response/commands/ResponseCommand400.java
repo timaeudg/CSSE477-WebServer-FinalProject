@@ -1,10 +1,12 @@
-package response;
+package response.commands;
 
 import java.io.File;
 import java.util.HashMap;
 
 import protocol.HttpResponse;
 import protocol.Protocol;
+import response.HttpResponseFactory;
+import response.ResponseCommand;
 
 /**
  * Creates a {@link HttpResponse} object for sending bad request response.
