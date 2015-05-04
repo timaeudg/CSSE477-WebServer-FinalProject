@@ -26,7 +26,7 @@
  * http://clarkson.edu/~rupakhcr
  */
  
-package request.processor;
+package request.processing.processors;
 
 import java.io.File;
 
@@ -34,7 +34,7 @@ import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import response.HttpResponseFactory;
-import response.ResponseCommand404;
+import response.commands.ResponseCommand404;
 
 /**
  * 

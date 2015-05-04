@@ -1,4 +1,4 @@
-package request.processor;
+package request.processing.processors;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import response.HttpResponseFactory;
-import response.ResponseCommand200;
-import response.ResponseCommand500;
+import response.commands.ResponseCommand200;
+import response.commands.ResponseCommand500;
 
 public class DeleteRequestProcessor extends FileMustExistProcessor{
 

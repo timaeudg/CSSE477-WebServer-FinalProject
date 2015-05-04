@@ -29,9 +29,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 
+import request.processing.ServletLoader;
 import server.Server;
 
 /**
@@ -44,6 +46,7 @@ public class WebServer extends JFrame {
 	private static final long serialVersionUID = 5042579745743827174L;
 	
 	private static Server server;
+	private static final ServletLoader servletLoader = ServletLoader.getInstance();
 
 	/**
 	 * @return the server
@@ -58,6 +61,12 @@ public class WebServer extends JFrame {
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
+	    try {
+	        Thread t = new Thread(servletLoader, "ServletLoader");
+	        t.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				new WebServerGui().setVisible(true);

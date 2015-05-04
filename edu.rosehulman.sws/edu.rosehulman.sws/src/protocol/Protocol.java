@@ -59,6 +59,9 @@ public class Protocol {
     public static final int NOT_FOUND_CODE = 404;
     public static final String NOT_FOUND_TEXT = "Not Found";
     
+    public static final int METHOD_NOT_ALLOWED_CODE = 405;
+    public static final String METHOD_NOT_ALLOWED_TEXT = "Method Not Allowed";
+    
     public static final int SERVER_ERROR_CODE = 500;
     public static final String SERVER_ERROR_TEXT = "Error encountered while processing request";
     

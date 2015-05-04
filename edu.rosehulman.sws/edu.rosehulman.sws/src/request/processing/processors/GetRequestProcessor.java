@@ -1,11 +1,11 @@
-package request.processor;
+package request.processing.processors;
 
 import java.io.File;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
-import response.ResponseCommand200;
+import response.commands.ResponseCommand200;
 
 public class GetRequestProcessor extends FileMustExistProcessor{
 
