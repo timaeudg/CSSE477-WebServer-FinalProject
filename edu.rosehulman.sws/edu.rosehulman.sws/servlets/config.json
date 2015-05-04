@@ -6,14 +6,14 @@
         "servlet": "ExampleServlet"
     },
     {
-        "path": "BUTTSbutts",
+        "path": "NEWRESPONSE",
         "method": "POST",
-        "servlet": "ExampleServlet"
+        "servlet": "CreatedFileServlet"
     },
     {
         "path": "ExampleServlet",
         "method": "POST",
-        "servlet": "ExampleServlet"
+        "servlet": "CreatedFileServlet"
     },
     
     ]

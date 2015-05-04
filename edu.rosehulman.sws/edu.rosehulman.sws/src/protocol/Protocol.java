@@ -46,6 +46,9 @@ public class Protocol {
     // Some useful http codes and text
     public static final int OK_CODE = 200;
     public static final String OK_TEXT = "OK";
+
+    public static final int FILE_CREATED_CODE = 201;
+    public static final String FILE_CREATED_TEXT = "File Created";
     
     public static final int MOVED_PERMANENTLY_CODE = 301;
     public static final String MOVED_PERMANENTLY_TEXT = "Moved Permanently";
