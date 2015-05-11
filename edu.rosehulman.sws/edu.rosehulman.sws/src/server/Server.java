@@ -26,6 +26,11 @@ import gui.WebServerGui;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import security.ConnectionBlacklister;
+import security.ServerWatchdog;
 
 /**
  * This represents a welcoming server for the incoming
@@ -45,6 +50,9 @@ public class Server implements Runnable {
 	public static int numberOfRequests = 0;
 	public static int numberOfResponses = 0;
 	
+	private ServerWatchdog doggie;
+	private Timer doggieTimer;
+	
 	private WebServerGui window;
 	/**
 	 * @param rootDirectory
@@ -57,6 +65,13 @@ public class Server implements Runnable {
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
+		doggieTimer = new Timer();
+		doggieTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                doggie.checkIn();
+            }
+        }, 1000, 5000);
 	}
 
 	/**
@@ -126,6 +141,11 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
+				if(ConnectionBlacklister.checkBlacklist(connectionSocket.getInetAddress())){
+				    connectionSocket.close();
+				    return;
+				}
+				ConnectionBlacklister.updateCounters(connectionSocket.getInetAddress());
 				Server.numberOfRequests++;
 				
 				// Come out of the loop if the stop flag is set
@@ -172,4 +192,18 @@ public class Server implements Runnable {
 			return this.welcomeSocket.isClosed();
 		return true;
 	}
+
+    /**
+     * @return the doggie
+     */
+    public ServerWatchdog getDoggie() {
+        return doggie;
+    }
+
+    /**
+     * @param doggie the doggie to set
+     */
+    public void setDoggie(ServerWatchdog doggie) {
+        this.doggie = doggie;
+    }
 }

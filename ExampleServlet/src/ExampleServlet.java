@@ -8,6 +8,7 @@ import java.util.List;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
+import request.processing.RequestCache;
 import request.processing.Servlet;
 import response.HttpResponseFactory;
 import response.commands.ResponseCommand200;

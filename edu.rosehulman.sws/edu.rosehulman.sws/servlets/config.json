@@ -6,6 +6,11 @@
         "servlet": "ExampleServlet"
     },
     {
+        "path": "CachingServlet",
+        "method": "GET",
+        "servlet": "CachingServlet"
+    },
+    {
         "path": "NEWRESPONSE",
         "method": "POST",
         "servlet": "CreatedFileServlet"

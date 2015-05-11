@@ -28,12 +28,8 @@ import java.util.AbstractMap.SimpleEntry;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
-import protocol.Protocol;
-import protocol.ProtocolException;
+import request.processing.RequestCache;
 import request.processing.RequestProcessorManager;
-import response.HttpResponseFactory;
-import response.commands.ResponseCommand400;
-import response.commands.ResponseCommand505;
 
 /**
  * This class is responsible for handling a incoming request
@@ -101,6 +97,28 @@ public class ConnectionHandler implements Runnable {
 		SimpleEntry<HttpRequest, HttpResponse> pair = RequestProcessorManager.parseRequest(request, inStream, outStream);
 		request = pair.getKey();
 		response = pair.getValue();
+		
+		if(RequestCache.checkCacheAndRespond(request, outStream)) {
+		   //It's true, so we have already responded with something from cache,
+		   //all we need do now is close out and stop
+		    Server.numberOfResponses++;
+	        try{
+	            // we are all done so close the socket
+	            socket.close();
+	        }
+	        catch(Exception e){
+	            // We will ignore this exception
+	            e.printStackTrace();
+	        } 
+	        
+	        // Increment number of connections by 1
+	        server.incrementConnections(1);
+	        // Get the end time
+	        long end = System.currentTimeMillis();
+	        this.server.incrementServiceTime(end-start);
+	        return;
+		}
+		
 		
 		if(response != null) {
 			// Means there was an error, now write the response object to the socket

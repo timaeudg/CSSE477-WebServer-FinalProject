@@ -198,4 +198,42 @@ public class HttpRequest {
 		buffer.append("----------------------------------\n");
 		return buffer.toString();
 	}
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(this.method);
+        buffer.append(Protocol.SPACE);
+        buffer.append(this.uri);
+        buffer.append(Protocol.SPACE);
+        buffer.append(this.version);
+        buffer.append(Protocol.LF);
+        
+        buffer.append("------------- Body ---------------\n");
+        buffer.append(this.body);
+        String requestString = buffer.toString();
+        return requestString.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof HttpRequest){
+            HttpRequest other = (HttpRequest) obj;
+            if(other.uri.equals(this.uri) 
+                    && other.method.equals(this.method) 
+                    && this.version.equals(other.version)){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

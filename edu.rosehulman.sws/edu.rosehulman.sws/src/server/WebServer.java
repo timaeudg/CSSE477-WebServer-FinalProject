@@ -34,6 +34,8 @@ import java.io.IOException;
 import javax.swing.*;
 
 import request.processing.ServletLoader;
+import security.ConnectionBlacklister;
+import security.ServerWatchdog;
 import server.Server;
 
 /**
@@ -46,7 +48,10 @@ public class WebServer extends JFrame {
 	private static final long serialVersionUID = 5042579745743827174L;
 	
 	private static Server server;
+	private static ConnectionBlacklister blacklist = new ConnectionBlacklister();
 	private static final ServletLoader servletLoader = ServletLoader.getInstance();
+	private static WebServerGui gui;
+	private static ServerWatchdog doggie;
 
 	/**
 	 * @return the server
@@ -64,12 +69,15 @@ public class WebServer extends JFrame {
 	    try {
 	        Thread t = new Thread(servletLoader, "ServletLoader");
 	        t.start();
+	        Thread t2 = new Thread(blacklist, "blacklist");
+	        t2.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new WebServerGui().setVisible(true);
+				gui = new WebServerGui();
+				gui.setVisible(true);
 			}
 		});
 	}
@@ -77,7 +85,22 @@ public class WebServer extends JFrame {
 	public static void createServer(String rootDirectory, int port, WebServerGui gui) {
 		server = new Server(rootDirectory, port, gui);
 		// Now run the server in a separate thread
-		new Thread(server).start();
+		Thread master = new Thread(server);
+		master.start();
+		doggie = new ServerWatchdog();
+		server.setDoggie(doggie);
+		doggie.setMaster(master);
+		new Thread(doggie).start();
+	}
+	
+	public static void restartServer() {
+	    Server newServer = new Server(server.getRootDirectory(), 
+	            server.getPort(), 
+	            gui);
+	    server = newServer;
+	    Thread newMaster = new Thread(server);
+	    newMaster.start();
+	    doggie.setMaster(newMaster);
 	}
 	
 	public static void clearServer(){
