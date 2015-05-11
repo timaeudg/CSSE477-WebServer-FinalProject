@@ -143,7 +143,7 @@ public class Server implements Runnable {
 				Socket connectionSocket = this.welcomeSocket.accept();
 				if(ConnectionBlacklister.checkBlacklist(connectionSocket.getInetAddress())){
 				    connectionSocket.close();
-				    return;
+				    continue;
 				}
 				ConnectionBlacklister.updateCounters(connectionSocket.getInetAddress());
 				Server.numberOfRequests++;

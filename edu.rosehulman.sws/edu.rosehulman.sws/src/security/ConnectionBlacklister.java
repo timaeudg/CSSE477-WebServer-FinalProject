@@ -29,20 +29,14 @@
 package security;
 
 import java.net.InetAddress;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import protocol.HttpRequest;
-import protocol.HttpResponse;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Maps;
 
 /**
  * 
