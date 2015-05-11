@@ -59,12 +59,10 @@ public class ServerWatchdog implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("GET DOWN MR PRESIDENT");
         deathTimer = new Timer();
         deathTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("THE PRESIDENT DIED, REVIVE HIM");
                 WebServer.clearServer();
                 WebServer.restartServer();
             }
@@ -75,13 +73,11 @@ public class ServerWatchdog implements Runnable{
     }
     
     public void checkIn() {
-        System.out.println("POTUS IS SAFE, ALL CLEAR");
         deathTimer.cancel();
         deathTimer = new Timer();
         deathTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("THE PRESIDENT DIED, REVIVE HIM");
                 WebServer.clearServer();
                 WebServer.restartServer();
             }
