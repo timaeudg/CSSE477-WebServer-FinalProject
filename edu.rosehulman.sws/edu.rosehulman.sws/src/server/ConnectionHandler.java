@@ -68,6 +68,10 @@ public class ConnectionHandler implements Runnable {
 	 */
 	public void run() {
 		// Get the start time
+	    if(Server.numberOfRequests % 1000 == 0) {
+	        System.out.println("Number of Requests Received: " + Server.numberOfRequests);
+	        System.out.println("Number of Responses Sent: " + Server.numberOfResponses);
+	    }
 		long start = System.currentTimeMillis();
 		
 		InputStream inStream = null;
@@ -120,7 +124,7 @@ public class ConnectionHandler implements Runnable {
 		
 		// We reached here means no error so far, so lets process further
 		RequestProcessorManager.processRequest(request, outStream);
-		
+		Server.numberOfResponses++;
 		try{
 			// we are all done so close the socket
 			socket.close();
