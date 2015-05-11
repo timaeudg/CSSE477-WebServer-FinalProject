@@ -43,7 +43,6 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +63,8 @@ public class ServletLoader implements Runnable {
 
     private static Map<String, Servlet> namesToServlets;
     private static Map<String, Map<String, Servlet>> servletMap;
-    private static Path servletDir = Paths.get("./servlets/");
-    private static Path servletConfig = Paths.get("./servlets/config.json");
+    private static Path servletDir = Paths.get("../servlets/");
+    private static Path servletConfig = Paths.get("../servlets/config.json");
     
     private static final ServletLoader instance = new ServletLoader();
     
