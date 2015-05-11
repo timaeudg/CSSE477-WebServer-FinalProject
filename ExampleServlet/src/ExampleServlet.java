@@ -19,7 +19,6 @@ public class ExampleServlet extends Servlet{
 
     @Override
     public void serveHttpRequest(HttpRequest request, OutputStream output) {
-        System.out.println("IN SERVE HTTPR REQUEST");
         HttpResponse response = null;
         if(checkIfFileExists(request)) {
             File file = getFilePath(request);
@@ -87,7 +86,6 @@ public class ExampleServlet extends Servlet{
         // Handling GET request here
         // Get relative URI path from request
         String uri = getServletURI(request);
-        System.out.println("SERVLET URI IS: " + uri);
         
         // Get root directory path from server
         String rootDirectory = WebServer.getServer().getRootDirectory();

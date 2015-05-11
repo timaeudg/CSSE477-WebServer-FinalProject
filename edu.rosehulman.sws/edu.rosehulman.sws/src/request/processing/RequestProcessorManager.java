@@ -84,6 +84,9 @@ public class RequestProcessorManager {
 	    String uri = request.getUri();
 	    List<String> rootPath = Arrays.asList(uri.split("/"));
 	    //This is because the first thing will be the empty string because of the where the slashes are parsed
+	    if(rootPath.size() < 2) {
+	        return "";
+	    }
         return rootPath.get(1);
 	}
 	
@@ -100,7 +103,6 @@ public class RequestProcessorManager {
 		HttpResponse errorResponse = null;
 		try {
 			readRequest = HttpRequest.read(inStream);
-			System.out.println(readRequest);
 		}
 		catch(ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create response
