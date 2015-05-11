@@ -42,6 +42,9 @@ public class Server implements Runnable {
 	private long connections;
 	private long serviceTime;
 	
+	public static int numberOfRequests = 0;
+	public static int numberOfResponses = 0;
+	
 	private WebServerGui window;
 	/**
 	 * @param rootDirectory
@@ -116,13 +119,14 @@ public class Server implements Runnable {
 	 */
 	public void run() {
 		try {
-			this.welcomeSocket = new ServerSocket(port);
+		    this.welcomeSocket = new ServerSocket(port);
 			
 			// Now keep welcoming new connections until stop flag is set to true
 			while(true) {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
+				Server.numberOfRequests++;
 				
 				// Come out of the loop if the stop flag is set
 				if(this.stop)
