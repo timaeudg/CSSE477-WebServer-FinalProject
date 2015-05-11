@@ -27,6 +27,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import security.ConnectionBlacklister;
+
 /**
  * This represents a welcoming server for the incoming
  * TCP request from a HTTP client such as a web browser. 
@@ -126,6 +128,11 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
+				if(ConnectionBlacklister.checkBlacklist(connectionSocket.getInetAddress())){
+				    connectionSocket.close();
+				    return;
+				}
+				ConnectionBlacklister.updateCounters(connectionSocket.getInetAddress());
 				Server.numberOfRequests++;
 				
 				// Come out of the loop if the stop flag is set

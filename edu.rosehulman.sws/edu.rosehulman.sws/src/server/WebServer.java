@@ -34,6 +34,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import request.processing.ServletLoader;
+import security.ConnectionBlacklister;
 import server.Server;
 
 /**
@@ -46,6 +47,7 @@ public class WebServer extends JFrame {
 	private static final long serialVersionUID = 5042579745743827174L;
 	
 	private static Server server;
+	private static ConnectionBlacklister blacklist = new ConnectionBlacklister();
 	private static final ServletLoader servletLoader = ServletLoader.getInstance();
 
 	/**
@@ -64,6 +66,8 @@ public class WebServer extends JFrame {
 	    try {
 	        Thread t = new Thread(servletLoader, "ServletLoader");
 	        t.start();
+	        Thread t2 = new Thread(blacklist, "blacklist");
+	        t2.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
