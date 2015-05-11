@@ -26,8 +26,11 @@ import gui.WebServerGui;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import security.ConnectionBlacklister;
+import security.ServerWatchdog;
 
 /**
  * This represents a welcoming server for the incoming
@@ -47,6 +50,9 @@ public class Server implements Runnable {
 	public static int numberOfRequests = 0;
 	public static int numberOfResponses = 0;
 	
+	private ServerWatchdog doggie;
+	private Timer doggieTimer;
+	
 	private WebServerGui window;
 	/**
 	 * @param rootDirectory
@@ -59,6 +65,13 @@ public class Server implements Runnable {
 		this.connections = 0;
 		this.serviceTime = 0;
 		this.window = window;
+		doggieTimer = new Timer();
+		doggieTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                doggie.checkIn();
+            }
+        }, 1000, 5000);
 	}
 
 	/**
@@ -179,4 +192,18 @@ public class Server implements Runnable {
 			return this.welcomeSocket.isClosed();
 		return true;
 	}
+
+    /**
+     * @return the doggie
+     */
+    public ServerWatchdog getDoggie() {
+        return doggie;
+    }
+
+    /**
+     * @param doggie the doggie to set
+     */
+    public void setDoggie(ServerWatchdog doggie) {
+        this.doggie = doggie;
+    }
 }

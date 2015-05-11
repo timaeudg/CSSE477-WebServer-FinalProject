@@ -68,7 +68,6 @@ public class ConnectionBlacklister implements Runnable{
     private static Timer counterTimer = new Timer();
     
     public static void updateCounters(InetAddress address) {
-        System.out.println("incrementing counter for: " + address.toString());
         Integer value = counters.getIfPresent(address);
         if(value != null) {
             //it's in the cache, so we need to update it
@@ -76,12 +75,10 @@ public class ConnectionBlacklister implements Runnable{
         } else {
             value = 1;
         }
-        System.out.println("updating value to be: " + value);
         counters.put(address, value);
     }
     
     private static void updateBlacklist() {
-        System.out.println("Checking blacklist");
         for(Map.Entry<InetAddress, Integer> entry : counters.asMap().entrySet()) {
             if(entry.getValue() > 2250) {
                 System.out.println("Attack detected, blacklisting: " 
@@ -95,12 +92,10 @@ public class ConnectionBlacklister implements Runnable{
     }
     
     public static boolean checkBlacklist(InetAddress address) {
-        System.out.println("checking address: " + address.toString());
         if(blacklist.getIfPresent(address) != null) {
             System.out.println("BLACKLISTED IP");
             return true;
         }
-        System.out.println("not blacklisted");
         return false;
     }
 
