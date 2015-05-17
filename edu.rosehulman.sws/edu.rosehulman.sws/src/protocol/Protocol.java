@@ -68,6 +68,9 @@ public class Protocol {
     public static final int METHOD_NOT_ALLOWED_CODE = 405;
     public static final String METHOD_NOT_ALLOWED_TEXT = "Method Not Allowed";
     
+    public static final int CONFLICT_CODE = 409;
+    public static final String CONFLICT_TEXT = "Conflict: Item already exists";
+    
     public static final int SERVER_ERROR_CODE = 500;
     public static final String SERVER_ERROR_TEXT = "Error encountered while processing request";
     

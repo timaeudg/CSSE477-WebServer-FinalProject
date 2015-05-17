@@ -29,6 +29,21 @@
         "path": "alldogs",
         "method": "GET",
         "servlet": "GetAllDogsServlet"
+    },
+    {
+        "path": "deletedogs",
+        "method": "DELETE",
+        "servlet": "DeleteDogServlet"
+    },
+    {
+        "path": "createdog",
+        "method": "POST",
+        "servlet": "PostDogServlet"
+    },
+    {
+        "path": "updatedog",
+        "method": "PUT",
+        "servlet": "PutDogServlet"
     }
     ]
 }
