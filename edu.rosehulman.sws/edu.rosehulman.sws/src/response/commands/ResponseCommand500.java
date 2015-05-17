@@ -19,7 +19,7 @@ public class ResponseCommand500 implements ResponseCommand {
 	@Override
 	public HttpResponse createResponse(File file, String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.SERVER_ERROR_CODE, 
-				Protocol.SERVER_ERROR_TEXT, new HashMap<String, String>(), null);
+				Protocol.SERVER_ERROR_TEXT, new HashMap<String, String>(), null, null);
 		
 		// Lets fill up the header fields with more information
 		HttpResponseFactory.fillGeneralHeader(response, connection);

@@ -1,0 +1,34 @@
+{
+    "config": 
+    [{
+        "path": "StartingServlet",
+        "method": "GET",
+        "servlet": "ExampleServlet"
+    },
+    {
+        "path": "CachingServlet",
+        "method": "GET",
+        "servlet": "CachingServlet"
+    },
+    {
+        "path": "NEWRESPONSE",
+        "method": "POST",
+        "servlet": "CreatedFileServlet"
+    },
+    {
+        "path": "ExampleServlet",
+        "method": "POST",
+        "servlet": "CreatedFileServlet"
+    },
+    {
+        "path": "somedogs",
+        "method": "GET",
+        "servlet": "GetDogServlet"
+    },
+    {
+        "path": "alldogs",
+        "method": "GET",
+        "servlet": "GetAllDogsServlet"
+    }
+    ]
+}

@@ -26,7 +26,7 @@ public class ResponseCommand201 implements ResponseCommand {
 
     @Override
     public HttpResponse createResponse(File file, String connection) {
-        HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.FILE_CREATED_CODE, Protocol.FILE_CREATED_TEXT, new HashMap<String, String>(), file);
+        HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.FILE_CREATED_CODE, Protocol.FILE_CREATED_TEXT, new HashMap<String, String>(), file, null);
 
         // Lets fill up header fields with more information
         HttpResponseFactory.fillGeneralHeader(response, connection);

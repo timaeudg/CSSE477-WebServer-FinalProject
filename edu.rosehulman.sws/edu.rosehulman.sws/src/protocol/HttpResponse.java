@@ -23,9 +23,12 @@ package protocol;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -42,6 +45,7 @@ public class HttpResponse {
 	private String phrase;
 	private Map<String, String> header;
 	private File file;
+	private String body;
 
 	
 	/**
@@ -53,12 +57,13 @@ public class HttpResponse {
 	 * @param header The header field map.
 	 * @param file The file to be sent.
 	 */
-	public HttpResponse(String version, int status, String phrase, Map<String, String> header, File file) {
+	public HttpResponse(String version, int status, String phrase, Map<String, String> header, File file, String body) {
 		this.version = version;
 		this.status = status;
 		this.phrase = phrase;
 		this.header = header;
 		this.file = file;
+		this.body = body;
 	}
 
 	/**
@@ -95,6 +100,15 @@ public class HttpResponse {
 	public File getFile() {
 		return file;
 	}
+	
+	/**
+     * The body to be sent.
+     * 
+     * @return the body
+     */
+    public String getBody() {
+        return body;
+    }
 
 	/**
 	 * Returns the header fields associated with the response object.
@@ -156,6 +170,18 @@ public class HttpResponse {
 			}
 			// Close the file input stream, we are done reading
 			inStream.close();
+		} else if(body != null) {
+		    InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+            BufferedInputStream inStream = new BufferedInputStream(stream, Protocol.CHUNK_LENGTH);
+            
+            byte[] buffer = new byte[Protocol.CHUNK_LENGTH];
+            int bytesRead = 0;
+            // While there is some bytes to read from file, read each chunk and send to the socket out stream
+            while((bytesRead = inStream.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            // Close the file input stream, we are done reading
+            inStream.close();
 		}
 		
 		// Flush the data so that outStream sends everything through the socket 
@@ -185,6 +211,9 @@ public class HttpResponse {
 		if(file != null) {
 			buffer.append("Data: ");
 			buffer.append(this.file.getAbsolutePath());
+		} else if (body != null) {
+		    buffer.append("Data: ");
+            buffer.append(this.body);
 		}
 		buffer.append("\n----------------------------------\n");
 		return buffer.toString();

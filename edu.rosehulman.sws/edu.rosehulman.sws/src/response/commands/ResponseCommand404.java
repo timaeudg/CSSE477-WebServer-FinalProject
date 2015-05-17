@@ -19,7 +19,7 @@ public class ResponseCommand404 implements ResponseCommand {
 	@Override
 	public HttpResponse createResponse(File file, String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.NOT_FOUND_CODE, 
-				Protocol.NOT_FOUND_TEXT, new HashMap<String, String>(), null);
+				Protocol.NOT_FOUND_TEXT, new HashMap<String, String>(), null, null);
 		
 		// Lets fill up the header fields with more information
 		HttpResponseFactory.fillGeneralHeader(response, connection);

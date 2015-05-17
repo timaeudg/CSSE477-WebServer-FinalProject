@@ -18,7 +18,7 @@ public class ResponseCommand400 implements ResponseCommand {
 
 	public HttpResponse createResponse(File file, String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.BAD_REQUEST_CODE, 
-				Protocol.BAD_REQUEST_TEXT, new HashMap<String, String>(), null);
+				Protocol.BAD_REQUEST_TEXT, new HashMap<String, String>(), null, null);
 		
 		// Lets fill up header fields with more information
 		HttpResponseFactory.fillGeneralHeader(response, connection);

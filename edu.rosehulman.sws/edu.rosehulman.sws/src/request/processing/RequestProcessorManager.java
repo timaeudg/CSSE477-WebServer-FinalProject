@@ -42,6 +42,7 @@ public class RequestProcessorManager {
 		}
 		
 		String servletRoot = extractRootPath(request);
+		System.out.println("Servlet root: " + servletRoot);
 		Map<String, Map<String, Servlet>> servletMap = ServletLoader.getServletMap();
 		Map<String, Servlet> methodMap = servletMap.get(servletRoot);
 		if(methodMap == null) {

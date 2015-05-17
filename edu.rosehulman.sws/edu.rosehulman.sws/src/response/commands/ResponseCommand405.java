@@ -19,7 +19,7 @@ public class ResponseCommand405 implements ResponseCommand {
 	@Override
 	public HttpResponse createResponse(File file, String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.METHOD_NOT_ALLOWED_CODE, 
-				Protocol.METHOD_NOT_ALLOWED_TEXT, new HashMap<String, String>(), null);
+				Protocol.METHOD_NOT_ALLOWED_TEXT, new HashMap<String, String>(), null, null);
 		
 		// Lets fill up the header fields with more information
 		HttpResponseFactory.fillGeneralHeader(response, connection);
