@@ -22,7 +22,7 @@ public class ResponseCommand304 implements ResponseCommand {
 	@Override
 	public HttpResponse createResponse(File file, String connection) {
 		HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.NOT_MODIFIED_CODE, 
-				Protocol.NOT_MODIFIED_TEXT, new HashMap<String, String>(), null);
+				Protocol.NOT_MODIFIED_TEXT, new HashMap<String, String>(), null, null);
 		
 		// Lets fill up header fields with more information
 		HttpResponseFactory.fillGeneralHeader(response, connection);

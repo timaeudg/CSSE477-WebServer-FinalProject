@@ -26,7 +26,7 @@ public class ResponseCommand200 implements ResponseCommand {
 
     @Override
     public HttpResponse createResponse(File file, String connection) {
-        HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, Protocol.OK_TEXT, new HashMap<String, String>(), file);
+        HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, Protocol.OK_TEXT, new HashMap<String, String>(), file, null);
 
         // Lets fill up header fields with more information
         HttpResponseFactory.fillGeneralHeader(response, connection);
@@ -44,6 +44,33 @@ public class ResponseCommand200 implements ResponseCommand {
             // Lets get MIME type for the file
             FileNameMap fileNameMap = URLConnection.getFileNameMap();
             String mime = fileNameMap.getContentTypeFor(file.getName());
+            // The fileNameMap cannot find mime type for all of the documents,
+            // e.g. doc, odt, etc.
+            // So we will not add this field if we cannot figure out what a mime
+            // type is for the file.
+            // Let browser do this job by itself.
+            if (mime != null) {
+                response.put(Protocol.CONTENT_TYPE, mime);
+            }
+        }
+
+        return response;
+    }
+    
+    public HttpResponse createResponse(String body, String connection) {
+        HttpResponse response = new HttpResponse(Protocol.VERSION, Protocol.OK_CODE, Protocol.OK_TEXT, new HashMap<String, String>(), null, body);
+
+        // Lets fill up header fields with more information
+        HttpResponseFactory.fillGeneralHeader(response, connection);
+
+        if (body != null) {
+            // Lets get content length in bytes
+            long length = body.length();
+            response.put(Protocol.CONTENT_LENGTH, length + "");
+
+            // Lets get MIME type for the file
+            FileNameMap fileNameMap = URLConnection.getFileNameMap();
+            String mime = fileNameMap.getContentTypeFor("file.json");
             // The fileNameMap cannot find mime type for all of the documents,
             // e.g. doc, odt, etc.
             // So we will not add this field if we cannot figure out what a mime
