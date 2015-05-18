@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="external_libraries/guava-18.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_libraries/json-20141113.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_libraries/json-simple-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_libraries/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Icarus/Git/CSSE477-WebServer-FinalProject/edu.rosehulman.sws/edu.rosehulman.sws/external_libraries/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Icarus/Git/CSSE477-WebServer-FinalProject/edu.rosehulman.sws/edu.rosehulman.sws/external_libraries/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Icarus/Git/CSSE477-WebServer-FinalProject/edu.rosehulman.sws/edu.rosehulman.sws/external_libraries/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

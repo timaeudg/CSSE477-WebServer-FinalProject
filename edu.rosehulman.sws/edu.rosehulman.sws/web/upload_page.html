@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Upload</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    <body>
+        <div id="title-bar" class="bar">
+            <div id="logo">
+                <h1>Nice Dowg!</h1>
+            </div>
+            <div id="navigation">
+                <a href="homepage.html">Home</a>
+                <a href="upload_page.html">Add</a>
+                <a href="update_page.html">Update</a>
+                <a href="delete_page.html">Delete</a>
+            </div>
+        </div>
+        <div id="content">
+            <div id="content-title" class="bar">
+                <h1>Show Off Your Nice Dowg!</h1>
+            </div>
+            <div id="form" class="bar">
+                Name: <input type="text" name="name" value="" id="dowg-name"/><br>
+                Breed: <input type="text" name="breed" value="Growlithe" id="dowg-breed"/><br>
+                Age: <input type="text" name="age" value="3" id="dowg-age"/><br>
+                Description: <input type="text" name="description" value="One nice dowg!" id="dowg-description"/><br>
+                <button type="button" onclick="addDowg()" name="submit">Submit Your Nice Dowg!</button>
+            </div>
+        </div>
+        <div id="submission-status" class="bar"></div>
+    </body>
+</html>

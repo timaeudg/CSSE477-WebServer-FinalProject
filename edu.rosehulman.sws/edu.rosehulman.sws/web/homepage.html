@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Nice Dowg!</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    <body onload="loadAllDowgs()">
+        <div id="title-bar" class="bar">
+            <div id="logo">
+                <h1>Nice Dowg!</h1>
+            </div>
+            <div id="navigation">
+                <a href="homepage.html">Home</a>
+                <a href="upload_page.html">Add</a>
+                <a href="update_page.html">Update</a>
+                <a href="delete_page.html">Delete</a>
+            </div>
+        </div>
+        <div id="content">
+            <div id="content-title" class="bar">
+                <h1>Check Out These Nice Dowgs!</h1>
+            </div>
+            <div id="dowg-list">
+                <div class="bar">Click the button to load some dowgs!</div>
+            </div>
+            <div id="load-button">
+                <button type="button" onclick="loadAllDowgs()" name="submit">Release The Dowgs!</button>
+            </div>
+        </div>            
+    </body>
+</html>
