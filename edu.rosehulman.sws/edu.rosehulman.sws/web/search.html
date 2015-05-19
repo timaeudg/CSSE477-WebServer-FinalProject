@@ -12,7 +12,7 @@ and open the template in the editor.
         <script src="js/main.js"></script>
         <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
-    <body onload="loadAllDowgs()">
+    <body>
         <div id="title-bar" class="bar">
             <div id="logo">
                 <h1>Nice Dowg!</h1>
@@ -27,14 +27,13 @@ and open the template in the editor.
         </div>
         <div id="content">
             <div id="content-title" class="bar">
-                <h1>Check Out These Nice Dowgs!</h1>
+                <h1>Search For A Specific Nice Dowg!</h1>
             </div>
-            <div id="dowg-list">
-                <div class="bar">Click the button to load some dowgs!</div>
+            <div id="form" class="bar">
+                Name: <input type="text" name="name" value="Growly" id="dowg-name"/><br>
+                <button type="button" onclick="loadDowg()" name="submit" id="dowg-button">Find A Nice Dowg</button>
             </div>
-            <div id="load-button">
-                <button type="button" onclick="loadAllDowgs()" name="submit">Release The Dowgs!</button>
-            </div>
+            <div id="dowg-list"></div>
         </div>            
     </body>
 </html>

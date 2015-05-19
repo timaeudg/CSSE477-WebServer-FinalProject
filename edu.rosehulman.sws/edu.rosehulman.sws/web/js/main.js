@@ -53,18 +53,33 @@ function loadDowg(){
         if (xmlhttp.readyState===4 && xmlhttp.status===200)
         {
             var fullText = xmlhttp.responseText;
-            var jsonVer = JSON.parse(fullText);
-            var name = jsonVer.name;
-            var description = jsonVer.description;
-            var age = jsonVer.age;
-            var breed = jsonVer.breed;
-            document.getElementById("doge-name").innerHTML=name;
-            document.getElementById("doge-age").innerHTML=age;
-            document.getElementById("doge-breed").innerHTML=breed;
-            document.getElementById("doge-description").innerHTML=description;            
+            var dogHTML = "";
+            if (fullText === "{}"){
+                dogHTML += "<div id=\"dog-item\" class=\"bar\">";
+                dogHTML += "<h1>Dog Not Found!</h1>";
+                dogHTML += "</div><br>";
+            }
+            else {                
+                var jsonVer = JSON.parse(fullText);
+                var name = jsonVer.name;
+                var description = jsonVer.description;
+                var age = jsonVer.age;
+                var breed = jsonVer.breed;
+
+                dogHTML += "<div id=\"dog-item\" class=\"bar\">";
+                dogHTML += "<img src=\"dowg.png\" class=\"dog-image\">";
+                dogHTML += "<div id=\"dog-details\">";
+                dogHTML += "<strong>Name: " + name + "</strong><br>";
+                dogHTML += "Age: " + age + "<br>";
+                dogHTML += "Breed: " + breed + "<br>";
+                dogHTML += "Description: " + description + "<br>";
+                dogHTML += "</div></div><br>";
+            }
+            document.getElementById("dowg-list").innerHTML=dogHTML;
         }
-    };    
-    xmlhttp.open("GET", host_url+"/somedogs/v1/"+"james", true);
+    };
+    var name = document.getElementById("dowg-name").value;
+    xmlhttp.open("GET", host_url+"/somedogs/v1/"+name, true);
     xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.send();    
 }
